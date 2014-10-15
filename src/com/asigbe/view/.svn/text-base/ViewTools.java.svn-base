@@ -1,0 +1,73 @@
+package com.asigbe.view;
+
+import android.content.Context;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.view.LayoutInflater;
+import android.view.View;
+
+/**
+ * Utility class for views.
+ * 
+ * @author Delali Zigah
+ */
+public class ViewTools {
+
+    /**
+     * Inflates the given view.
+     */
+    public static View inflateView(Context context, int resource) {
+	LayoutInflater vi = (LayoutInflater) context
+	        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	return vi.inflate(resource, null);
+    }
+
+    /**
+     * Retrieves the id of a resource from a given package.
+     * 
+     * @return the id or -1 if not found
+     */
+    public static int getResourceId(Context context, String packageName,
+	    String name, String defType) {
+	try {
+	    return context.getPackageManager().getResourcesForApplication(
+		    packageName).getIdentifier(name, defType, packageName);
+	} catch (NameNotFoundException e) {
+	}
+	return 0;
+    }
+
+    /**
+     * Retrieves the array of a resource from a given package.
+     * 
+     * @return the array or <code>null</code> if not found
+     */
+    public static int[] getIntArray(Context context, String packageName,
+	    String name, String defType) {
+	try {
+	    return context.getPackageManager().getResourcesForApplication(
+		    packageName).getIntArray(
+		    getResourceId(context, packageName, name, defType));
+	} catch (NameNotFoundException e) {
+
+	}
+	return null;
+    }
+
+    /**
+     * Retrieves the context for a package.
+     * 
+     * @return the package context or <code>null</code> if not found
+     */
+    public static Context getPackageContext(Context context, String packageName) {
+	Context packageContext;
+	try {
+	    packageContext = context.createPackageContext(packageName,
+		    Context.CONTEXT_IGNORE_SECURITY
+		            | Context.CONTEXT_INCLUDE_CODE);
+	    return packageContext;
+	} catch (NameNotFoundException e) {
+
+	}
+	return null;
+    }
+}
